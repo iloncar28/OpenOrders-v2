@@ -1,0 +1,47 @@
+11:48:50 AM- Sending email started!
+11:48:51 AM- Successful email sent to digital_vanguard_strategy@outlook.com
+11:48:52 AM- Successful email sent to iloncar28@gmail.com
+11:48:52 AM- Missing email from the table for TRIUMPH CONTROLS FRANCE
+11:48:52 AM- Missing email from the table for CALIDUS Aerospace
+11:48:52 AM- Missing email from the table for EADS CASA CENTROS DE SAN PABLO
+11:48:53 AM- Successful email sent to iloncar28@gmail.com
+11:48:53 AM- Missing email from the table for TELAIR INTERNATIONAL
+11:48:54 AM- Email  not found in email config table.
+11:48:54 AM- Missing email from the table for TUSAS-TÜRK HAVACILIK VE UZAY SANAYII A.S.
+11:48:54 AM- Missing email from the table for Score Marine Limited
+11:48:54 AM- Email  not found in email config table.
+11:48:55 AM- Email  not found in email config table.
+11:48:55 AM- Email  not found in email config table.
+11:48:55 AM- Email  not found in email config table.
+11:48:55 AM- Email  not found in email config table.
+11:48:55 AM- Email  not found in email config table.
+11:48:56 AM- Email  not found in email config table.
+11:48:56 AM- Email  not found in email config table.
+11:48:56 AM- Email  not found in email config table.
+11:48:56 AM- Email  not found in email config table.
+11:48:56 AM- Email  not found in email config table.
+11:48:57 AM- Email  not found in email config table.
+11:48:57 AM- Email  not found in email config table.
+11:48:57 AM- Email  not found in email config table.
+11:48:57 AM- Email  not found in email config table.
+11:48:57 AM- Email  not found in email config table.
+11:48:58 AM- Email  not found in email config table.
+11:48:58 AM- Email  not found in email config table.
+11:48:58 AM- Email  not found in email config table.
+11:48:58 AM- Email  not found in email config table.
+11:48:59 AM- Email  not found in email config table.
+11:48:59 AM- Email  not found in email config table.
+11:48:59 AM- Email  not found in email config table.
+11:48:59 AM- Email  not found in email config table.
+11:49:00 AM- Email  not found in email config table.
+11:49:00 AM- Email  not found in email config table.
+11:49:00 AM- Email  not found in email config table.
+11:49:00 AM- Email  not found in email config table.
+11:49:00 AM- Email  not found in email config table.
+11:49:00 AM- Email  not found in email config table.
+11:49:01 AM- Email  not found in email config table.
+11:49:01 AM- Email  not found in email config table.
+11:49:01 AM- Email  not found in email config table.
+11:49:02 AM- Email  not found in email config table.
+11:49:02 AM- Email  not found in email config table.
+11:49:02 AM- Sending email ended! 

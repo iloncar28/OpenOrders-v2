@@ -323,4 +323,4 @@ Set objWorkbook = Nothing
 
 WScript.Echo "Files successfully split and sent."
 
-Cleaner()
+'Cleaner()
