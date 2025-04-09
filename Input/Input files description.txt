@@ -1,0 +1,5 @@
+Input files must be named: 
+1. "CustomerOrderLinesExport1.csv"
+2. "CustomerOrdersExport1.csv"
+
+Different naming will not be visible to the automation.
