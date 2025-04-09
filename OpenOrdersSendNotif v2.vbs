@@ -1,32 +1,16 @@
-Function SendEmail(Recipient, Subject, Body, AttachmentPath)
-
-    Dim OutlookApp, MailItem
-    Set OutlookApp = Nothing
-    Set OutlookApp = CreateObject("Outlook.Application")
-    Set MailItem = OutlookApp.CreateItem(0)
-
-     MailItem.To = Recipient
-     MailItem.Subject = Subject
-     MailItem.HTMLBody = "<html><body><pre>" & Body & "</pre></body></html>"
-      If AttachmentPath <> "" Then
-        MailItem.Attachments.Add AttachmentPath
-      End If
-    MailItem.Send
-
-    Set MailItem = Nothing
-    Set OutlookApp = Nothing
-    WScript.Sleep 500
-
-End Function
 
 Function SendAuthEmail(Recipient, Subject, Body, AttachmentPath)
 
     Dim objMessage, objConfig, Fields, senderEmail, senderPass
     Dim OutlookApp, MailItem
 
-    senderEmail = "email sending from"
-    senderPass = "email password"
+'########################################################################################
+'Input your email credentials:
 
+    senderEmail = "your.user.email@triumph.com"
+    senderPass  = "YourEmailPassword"
+
+'########################################################################################
     Set OutlookApp = Nothing
     Set OutlookApp = CreateObject("Outlook.Application")
     Set MailItem = OutlookApp.CreateItem(0)
@@ -55,13 +39,58 @@ Function SendAuthEmail(Recipient, Subject, Body, AttachmentPath)
 
     Set MailItem = Nothing
     Set OutlookApp = Nothing
-    WScript.Sleep 500
-
     Set objMessage = Nothing
     Set objConfig = Nothing
     Set Fields = Nothing
+    WScript.Sleep 350
 
+End Function
 
+Function SendEmail(Recipient, Subject, Body, AttachmentPath)
+
+    Dim OutlookApp, MailItem
+    Set OutlookApp = Nothing
+    Set OutlookApp = CreateObject("Outlook.Application")
+    Set MailItem = OutlookApp.CreateItem(0)
+
+     MailItem.To = Recipient
+     MailItem.Subject = Subject
+     MailItem.HTMLBody = "<html><body><pre>" & Body & "</pre></body></html>"
+      If AttachmentPath <> "" Then
+        MailItem.Attachments.Add AttachmentPath
+      End If
+    MailItem.Send
+
+    Set MailItem = Nothing
+    Set OutlookApp = Nothing
+    WScript.Sleep 350
+
+End Function
+
+Sub KillProcess(processName)
+    Dim objShell, command
+    Set objShell = CreateObject("WScript.Shell")
+    command = "taskkill /F /IM " & processName
+    objShell.Run command, 0, True
+    Set objShell = Nothing
+End Sub
+
+Function Cleaner()
+    On Error Resume Next 
+
+    KillProcess("excel.exe")
+    KillProcess("wscript.exe")
+
+    Dim objWMIService, objProcessList, objProcess
+    Set objWMIService = GetObject("winmgmts:\\.\root\cimv2")
+    Set objProcessList = objWMIService.ExecQuery("Select * from Win32_Process WHERE Name = 'excel.exe'")
+
+    For Each objProcess In objProcessList
+        objProcess.Terminate()
+    Next
+
+    Set objProcessList = Nothing
+    Set objWMIService = Nothing
 End Function
 
 
@@ -71,6 +100,28 @@ Dim emailSubject, emailBody, emailAttach, inputCustPoFile, objShell, scriptPath,
 Dim xlsxFile, csvFile, sendTo
 Dim custPO,order, custPoLastRow
 Dim emailName, emailValue, emailLastRow, dictEmails 
+Dim userChoice, promptMessage, selectedLanguage, headers2
+
+promptMessage = "Please choose a language for the header:" & vbCrLf & vbCrLf & _
+                "1: English" & vbCrLf & _
+                "2: German" & vbCrLf & vbCrLf & _
+                "Enter 1 or 2:"
+
+userChoice = InputBox(promptMessage, "Language Selection")
+
+Select Case userChoice
+    Case "1"
+        headers2 = "Name	Order	Customer PO	    Line	Status	Customer Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  'headers2 = file2.ReadLine
+
+    Case "2"
+        headers2 = "Name	Order	Customer PO	    Line	Status	Customer Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  'headers2 = file2.ReadLine
+
+    Case ""
+        MsgBox "Operation cancelled.", vbExclamation, "Cancelled"
+        
+    Case Else 
+        MsgBox "Invalid input. Please enter only 1 or 2.", vbCritical, "Input Error"
+End Select
 
 Set shell = CreateObject("WScript.Shell")
 Set dvs = CreateObject("Scripting.FileSystemObject")
@@ -177,34 +228,34 @@ Set dvsWorkbook = Nothing
 Set dvsWorksheet = Nothing
 
 '############################################# Main table - CustomerOrderLinesExport1 ############################################
-Set dvsCPLE = CreateObject("Excel.Application")
-Set dvsCPLEWB = dvsCPLE.Workbooks.Open(inputCustOrderLineFile)
-Set dvsCPLEWSheet = dvsCPLEWB.Sheets(1) 
-dvsCPLE.Visible = False
-dvsCPLE.DisplayAlerts = False
-CPLELastRow = dvsCPLEWSheet.UsedRange.Rows.Count
-headers2 = "Name	Order	Customer PO	    Line	Status	Customer Item	Description	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  'headers2 = file2.ReadLine
+Set file2 = dvs.OpenTextFile(inputFolder & "CustomerOrderLinesExport1.csv", 1, False, -1)
+'headers2 = "Name	Order	Customer PO	    Line	Status	Customer Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  
 
-
-For i = 1 to CPLELastRow
-     name = dvsCPLEWSheet.Cells(i, 16).Value
-     tcgOrder = dvsCPLEWSheet.Cells(i, 1).Value
-     line = dvsCPLEWSheet.Cells(i, 2).Value
-     orderStatus = dvsCPLEWSheet.Cells(i,3).Value
-     orderItem = dvsCPLEWSheet.Cells(i, 4).Value
-     customerItem = dvsCPLEWSheet.Cells(i, 5).Value
-     qtyOrdered = dvsCPLEWSheet.Cells(i, 6).Value
-     um = dvsCPLEWSheet.Cells(i, 7).Value
-     unitPrice = dvsCPLEWSheet.Cells(i, 8).Value
-     dueDate = dvsCPLEWSheet.Cells(i,10).Value
-     netPrice = dvsCPLEWSheet.Cells(i, 20).Value
-     currencyBQ = dvsCPLEWSheet.Cells(i, 69).Value
-
+Do While Not file2.AtEndOfStream
+    rowLine = file2.ReadLine
+    parts = Split(rowLine, vbTab)
+     name = parts(15) 
+     tcgOrder = parts(0)
+     line = parts(1)
+     orderStatus = parts(2)
+     orderItem = parts(3)
+     descriptionItem = parts(4)
+     customerItem = parts(17)
+     qtyOrdered = parts(5)
+     um = parts(6)
+     unitPrice = parts(7)
+     dueDate = parts(9)
+     netPrice = parts(19)
+     currencyBQ = parts(68)
     If custPO_dict.Exists(tcgOrder) Then
         custPO = custPO_dict(tcgOrder)
+        parts(1) = custPO 
     End If
-
+    
+    ' Create a new file if it does not exist for this name
     filteredName = Replace(name,"/"," ")
+    'filteredName = Replace(filteredName, """", "")
+    'notQuotedName = Replace(name, """", "")
     If name = "Name" Then
     Else 
         If Not dictFiles.Exists(name) Then
@@ -212,58 +263,11 @@ For i = 1 to CPLELastRow
             fileOut.WriteLine headers2
             dictFiles.Add name, fileOut
         End If
-        dictFiles(name).WriteLine name & vbTab & tcgOrder & vbTab & custPo & vbTab & line & vbTab & orderStatus & vbTab & orderItem & vbTab & customerItem & vbTab & qtyOrdered & vbTab & um & vbTab & dueDate & vbTab & unitPrice & vbTab & netPrice & vbTab & currencyBQ
+        dictFiles(name).WriteLine name & vbTab & tcgOrder & vbTab & custPo & vbTab & line & vbTab & orderStatus & vbTab & orderItem & vbTab & descriptionItem & vbTab & customerItem & vbTab & qtyOrdered & vbTab & um & vbTab & dueDate & vbTab & unitPrice & vbTab & netPrice & vbTab & currencyBQ
     End If
 
-
-Next
-
-dvsCPLE.Quit
-Set dvsCPLE = Nothing
-Set dvsCPLEWB = Nothing
-Set dvsCPLEWSheet = Nothing
-
-
-
-'Set file2 = dvs.OpenTextFile(inputFolder & "CustomerOrderLinesExport1.csv", 1, False, -1)
-'headers2 = "Name	Order	Customer PO	    Line	Status	Customer Item	Description	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  'headers2 = file2.ReadLine
-
-'Do While Not file2.AtEndOfStream
-'    rowLine = file2.ReadLine
-'    parts = Split(rowLine, vbTab)
-'     name = parts(15) 
-'     tcgOrder = parts(0)
-'     line = parts(1)
-'     orderStatus = parts(2)
-'     orderItem = parts(3)
-'     customerItem = parts(4)
-'     qtyOrdered = parts(5)
-'     um = parts(6)
-'     unitPrice = parts(7)
-'     dueDate = parts(9)
-'     netPrice = parts(19)
-'     currencyBQ = parts(68)
-'    If custPO_dict.Exists(tcgOrder) Then
-'        custPO = custPO_dict(tcgOrder)
-'        parts(1) = custPO 
-'    End If
-'    
-    ' Create a new file if it does not exist for this name
-'    filteredName = Replace(name,"/"," ")
-'    filteredName = Replace(filteredName, """", "")
-'    notQuotedName = Replace(name, """", "")
-'    If notQuotedName = "Name" Then
-'    Else 
-'        If Not dictFiles.Exists(notQuotedName) Then
-'            Set fileOut = dvs.CreateTextFile(outputFolder & "Open Orders Customer " & filteredName & ".tsv", 8)
-'            fileOut.WriteLine headers2
-'            dictFiles.Add notQuotedName, fileOut
-'        End If
-'        dictFiles(notQuotedName).WriteLine notQuotedName & vbTab & tcgOrder & vbTab & custPo & vbTab & line & vbTab & orderStatus & vbTab & orderItem & vbTab & customerItem & vbTab & qtyOrdered & vbTab & um & vbTab & dueDate & vbTab & unitPrice & vbTab & netPrice & vbTab & currencyBQ
-'    End If
-
-'Loop
-'file2.Close
+Loop
+file2.Close
 
 '############################################# Close all output files ###########################################################
 For Each key In dictFiles.Keys
@@ -318,3 +322,5 @@ Set fileOut = Nothing
 Set objWorkbook = Nothing
 
 WScript.Echo "Files successfully split and sent."
+
+Cleaner()
