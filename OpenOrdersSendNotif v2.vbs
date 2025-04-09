@@ -111,10 +111,10 @@ userChoice = InputBox(promptMessage, "Language Selection")
 
 Select Case userChoice
     Case "1"
-        headers2 = "Name	Order	Customer PO	    Line	Status	Customer Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  'headers2 = file2.ReadLine
+        headers2 = "Name	Order	Customer PO	    Line	Status	Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  'headers2 = file2.ReadLine
 
     Case "2"
-        headers2 = "Name	Order	Customer PO	    Line	Status	Customer Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  'headers2 = file2.ReadLine
+        headers2 = "Name	Order	Customer PO	    Line	Status	Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  'headers2 = file2.ReadLine
 
     Case ""
         MsgBox "Operation cancelled.", vbExclamation, "Cancelled"
