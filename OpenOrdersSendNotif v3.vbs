@@ -111,12 +111,12 @@ userChoice = InputBox(promptMessage, "Language Selection")
 
 Select Case userChoice
     Case "1"
-        headers2 = "Name	Order	Customer PO	    Line	Status	Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  'headers2 = file2.ReadLine
+        headers2 = "Name	Order	Customer PO	    Line	Status	Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  
 
     Case "2"
-        headers2 = "Name	Order	Customer PO	    Line	Status	Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  'headers2 = file2.ReadLine
+        headers2 = "Name	Auftr.	Kunden-BS	    Pos.	Status	Teil	Beschreibung	Kundenartikel	Bestellte Mge	ME	Fäll.-Term.	Preis/ME	Nettopreis	Währung"
 
-    Case ""
+    Case "" 
         MsgBox "Operation cancelled.", vbExclamation, "Cancelled"
         
     Case Else 
@@ -129,8 +129,6 @@ Set custPO_dict = CreateObject("Scripting.Dictionary")
 Set dictFiles = CreateObject("Scripting.Dictionary")
 Set dictExcelFiles = CreateObject("Scripting.Dictionary")
 rootFolder = shell.CurrentDirectory & "\"
-'rootFolder = "C:\Folder\Folder2\"
-
 custPO_dict.RemoveAll()
 dictFiles.RemoveAll()
 dictExcelFiles.RemoveAll()
@@ -192,11 +190,11 @@ dvsCustPoExcel.DisplayAlerts=False
 custPoLastRow = dvsCustPoWSheet.UsedRange.Rows.Count
 
 For iOrder = 1 to custPoLastRow
-    order = dvsCustPoWSheet.Cells(iOrder, 1).Value
-    custPO = dvsCustPoWSheet.Cells(iOrder, 2).Value
-        If Not custPO_dict.Exists(order) Then
-            custPO_dict.Add order, custPO
-        End If
+    order = TRIM(dvsCustPoWSheet.Cells(iOrder, 1).Value)
+    custPO = TRIM(dvsCustPoWSheet.Cells(iOrder, 2).Value)
+      If Not custPO_dict.Exists(order) Then
+        custPO_dict.Add order, custPO
+      End If
 Next
 
 dvsCustPoExcel.Quit
@@ -217,9 +215,9 @@ emailLastRow = dvsWorksheet.UsedRange.Rows.Count
 For iEmail = 1 to emailLastRow
     emailName = dvsWorksheet.Cells(iEmail, 1).Value
     emailValue = dvsWorksheet.Cells(iEmail, 2).Value
-        If Not dictEmails.Exists(emailName) Then
-            dictEmails.Add emailName, emailValue
-        End If
+      If Not dictEmails.Exists(emailName) Then
+        dictEmails.Add emailName, emailValue
+      End If
 Next
 
 dvsExcel.Quit
@@ -229,13 +227,12 @@ Set dvsWorksheet = Nothing
 
 '############################################# Main table - CustomerOrderLinesExport1 ############################################
 Set file2 = dvs.OpenTextFile(inputFolder & "CustomerOrderLinesExport1.csv", 1, False, -1)
-'headers2 = "Name	Order	Customer PO	    Line	Status	Customer Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  
 
 Do While Not file2.AtEndOfStream
     rowLine = file2.ReadLine
     parts = Split(rowLine, vbTab)
      name = parts(15) 
-     tcgOrder = parts(0)
+     tcgOrder = TRIM(parts(0))
      line = parts(1)
      orderStatus = parts(2)
      orderItem = parts(3)
@@ -249,14 +246,11 @@ Do While Not file2.AtEndOfStream
      currencyBQ = parts(68)
     If custPO_dict.Exists(tcgOrder) Then
         custPO = custPO_dict(tcgOrder)
-        parts(1) = custPO 
     End If
-    
-    ' Create a new file if it does not exist for this name
     filteredName = Replace(name,"/"," ")
-    'filteredName = Replace(filteredName, """", "")
-    'notQuotedName = Replace(name, """", "")
+
     If name = "Name" Then
+        'no addition handle needed atm
     Else 
         If Not dictFiles.Exists(name) Then
             Set fileOut = dvs.CreateTextFile(outputFolder & "Open Orders Customer " & filteredName & ".tsv", 8)
@@ -283,6 +277,7 @@ writeToReport.WriteLine  Time & "- Sending email started!"
 
 For Each key In dictFiles.Keys
     sendTo = ""
+    emailSubject = emailSubject & " " & filteredName
     filteredName = Replace(key,"/"," ")
     csvFile = outputFolder & "Open Orders Customer " & filteredName & ".tsv"
     xlsxFile = outputFolder & "Open Orders Customer " & filteredName & ".xlsx"
@@ -298,9 +293,8 @@ For Each key In dictFiles.Keys
             ' no auth
           SendEmail sendTo, emailSubject, emailBody, xlsxFile
             ' with auth 
-         ' SendAuthEmail sendTo, emailSubject, emailBody, xlsxFile
-
-         writeToReport.WriteLine Time & "- Successful email sent to " & sendTo
+         'SendAuthEmail sendTo, emailSubject, emailBody, xlsxFile
+            writeToReport.WriteLine Time & "- Successful email sent to " & sendTo
         End If
 
     Else
