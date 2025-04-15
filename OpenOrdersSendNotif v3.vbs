@@ -114,7 +114,7 @@ Select Case userChoice
         headers2 = "Name	Order	Customer PO	    Line	Status	Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  
 
     Case "2"
-        headers2 = "Name	Auftr.	Kunden-BS	    Pos.	Status	Teil	Beschreibung	Kundenartikel	Bestellte Mge	ME	Fäll.-Term.	Preis/ME	Nettopreis	Währung"
+        headers2 = "Name	Auftr.	Kunden-BS	    Pos.	Status	Teil	Beschreibung	Kundenartikel	Bestellte Mge	ME	Fall.-Term.	Preis/ME	Nettopreis	Wahrung"
 
     Case "" 
         MsgBox "Operation cancelled.", vbExclamation, "Cancelled"
@@ -269,6 +269,7 @@ For Each key In dictFiles.Keys
 Next
 
 '############################################# Convert CSV files to XLSX ########################################################
+On error resume next
 Set objExcel = CreateObject("Excel.Application")
 objExcel.Visible = false
 objExcel.DisplayAlerts = False
@@ -277,8 +278,8 @@ writeToReport.WriteLine  Time & "- Sending email started!"
 
 For Each key In dictFiles.Keys
     sendTo = ""
-    emailSubject = emailSubject & " " & filteredName
     filteredName = Replace(key,"/"," ")
+    emailSubject = "Open Orders Customer File " & filteredName
     csvFile = outputFolder & "Open Orders Customer " & filteredName & ".tsv"
     xlsxFile = outputFolder & "Open Orders Customer " & filteredName & ".xlsx"
     Set objWorkbook = objExcel.Workbooks.Open(csvFile,,,,,,,,vbTab)
@@ -301,7 +302,7 @@ For Each key In dictFiles.Keys
         writeToReport.WriteLine Time & "- Email " & dictEmails(key) & " not found in email config table."
     End If
 Next
-
+On Error Goto 0
 writeToReport.WriteLine Time & "- Sending email ended! "
 
 '############################################# Cleanup #########################################################################
