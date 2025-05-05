@@ -93,7 +93,6 @@ Function Cleaner()
     Set objWMIService = Nothing
 End Function
 
-
 Dim inputFolder, outputFolder, folderExist, rootFolder,configFolder, reportFileExist, reportFile
 Dim emails, file2
 Dim emailSubject, emailBody, emailAttach, inputCustPoFile, objShell, scriptPath, targetPath
@@ -114,13 +113,16 @@ Select Case userChoice
         headers2 = "Name	Order	Customer PO	    Line	Status	Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  
 
     Case "2"
-        headers2 = "Name	Auftr.	Kunden-BS	    Pos.	Status	Teil	Beschreibung	Kundenartikel	Bestellte Mge	ME	Fall.-Term.	Preis/ME	Nettopreis	Wahrung"
+        headers2 = "Name	Auftr.	Kunden-BS	    Pos.	Status	Teil	Beschreibung	Kundenartikel	Bestellte Mge	ME	Wunschtermin	Preis/ME	Nettopreis	Wahrung"
 
     Case "" 
         MsgBox "Operation cancelled.", vbExclamation, "Cancelled"
+        WScript.Quit
         
     Case Else 
         MsgBox "Invalid input. Please enter only 1 or 2.", vbCritical, "Input Error"
+        WScript.Quit
+        
 End Select
 
 Set shell = CreateObject("WScript.Shell")
@@ -241,7 +243,7 @@ Do While Not file2.AtEndOfStream
      qtyOrdered = parts(5)
      um = parts(6)
      unitPrice = parts(7)
-     dueDate = parts(9)
+     dueDate = parts(29)
      netPrice = parts(19)
      currencyBQ = parts(68)
     If custPO_dict.Exists(tcgOrder) Then
