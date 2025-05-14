@@ -228,6 +228,8 @@ Set dvsWorkbook = Nothing
 Set dvsWorksheet = Nothing
 
 '############################################# Main table - CustomerOrderLinesExport1 ############################################
+Dim rawDueDate, formattedDueDate
+
 Set file2 = dvs.OpenTextFile(inputFolder & "CustomerOrderLinesExport1.csv", 1, False, -1)
 
 Do While Not file2.AtEndOfStream
@@ -243,7 +245,15 @@ Do While Not file2.AtEndOfStream
      qtyOrdered = parts(5)
      um = parts(6)
      unitPrice = parts(7)
-     dueDate = parts(29)
+     'dueDate = parts(29)
+    rawDueDate = parts(29)
+    If IsDate(rawDueDate) Then
+        Dim dtDueDate
+        dtDueDate = CDate(rawDueDate)
+        dueDate = Right("0" & Day(dtDueDate), 2) & "." & Right("0" & Month(dtDueDate), 2) & "." & Year(dtDueDate)
+    Else
+        dueDate = rawDueDate
+    End If
      netPrice = parts(19)
      currencyBQ = parts(68)
     If custPO_dict.Exists(tcgOrder) Then
