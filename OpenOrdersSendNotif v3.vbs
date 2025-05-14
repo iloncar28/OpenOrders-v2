@@ -110,7 +110,7 @@ userChoice = InputBox(promptMessage, "Language Selection")
 
 Select Case userChoice
     Case "1"
-        headers2 = "Name	Order	Customer PO	    Line	Status	Item	Description	Customer Item	Qty Ordered	U/M	Due date	Unit Price	Net Price	Currency"  
+        headers2 = "Name	Order	Customer PO	    Line	Status	Item	Description	Customer Item	Qty Ordered	U/M	Desired date	Unit Price	Net Price	Currency"  
 
     Case "2"
         headers2 = "Name	Auftr.	Kunden-BS	    Pos.	Status	Teil	Beschreibung	Kundenartikel	Bestellte Mge	ME	Wunschtermin	Preis/ME	Nettopreis	Wahrung"
@@ -294,9 +294,23 @@ For Each key In dictFiles.Keys
     emailSubject = "Open Orders Customer File " & filteredName
     csvFile = outputFolder & "Open Orders Customer " & filteredName & ".tsv"
     xlsxFile = outputFolder & "Open Orders Customer " & filteredName & ".xlsx"
-    Set objWorkbook = objExcel.Workbooks.Open(csvFile,,,,,,,,vbTab)
-    objWorkbook.SaveAs xlsxFile, 51 
-    objWorkbook.Close False
+    'Set objWorkbook = objExcel.Workbooks.Open(csvFile,,,,,,,,vbTab)
+    'objWorkbook.SaveAs xlsxFile, 51 
+    'objWorkbook.Close False
+'test part
+Dim lastRow, i
+Set objWorkbook = objExcel.Workbooks.Open(csvFile,,,,,,,,vbTab)
+Set objSheet = objWorkbook.Sheets(1)
+lastRow = objSheet.Cells(objSheet.Rows.Count, 11).End(-4162).Row 
+ For i = 2 To lastRow 
+    objSheet.Cells(i, 11).NumberFormat = "@"
+ Next
+
+objWorkbook.SaveAs xlsxFile, 51
+objWorkbook.Close False
+Set objSheet = Nothing
+'end
+
 
     If dictEmails.Exists(key) Then
         sendTo =  dictEmails(key)
@@ -329,5 +343,3 @@ Set fileOut = Nothing
 Set objWorkbook = Nothing
 
 WScript.Echo "Files successfully split and sent."
-
-'Cleaner()

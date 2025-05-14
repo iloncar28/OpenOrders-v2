@@ -1,0 +1,47 @@
+1:33:21 PM- Sending email started!
+1:33:22 PM- Missing email from the table for BAE SYSTEMS (OPERATIONS) LTD (252-/315--)
+1:33:22 PM- Missing email from the table for GOODRICH ACTUATION SYSTEMS
+1:33:22 PM- Missing email from the table for TRIUMPH CONTROLS FRANCE
+1:33:22 PM- Missing email from the table for CALIDUS Aerospace
+1:33:22 PM- Missing email from the table for EADS CASA CENTROS DE SAN PABLO
+1:33:23 PM- Missing email from the table for AIRBUS OPERATIONS GMBH
+1:33:23 PM- Missing email from the table for TELAIR INTERNATIONAL
+1:33:23 PM- Email  not found in email config table.
+1:33:23 PM- Missing email from the table for TUSAS-TÜRK HAVACILIK VE UZAY SANAYII A.S.
+1:33:23 PM- Missing email from the table for Score Marine Limited
+1:33:23 PM- Email  not found in email config table.
+1:33:23 PM- Email  not found in email config table.
+1:33:23 PM- Email  not found in email config table.
+1:33:23 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:24 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:25 PM- Email  not found in email config table.
+1:33:26 PM- Email  not found in email config table.
+1:33:26 PM- Email  not found in email config table.
+1:33:26 PM- Email  not found in email config table.
+1:33:26 PM- Email  not found in email config table.
+1:33:26 PM- Email  not found in email config table.
+1:33:26 PM- Email  not found in email config table.
+1:33:27 PM- Email  not found in email config table.
+1:33:27 PM- Email  not found in email config table.
+1:33:27 PM- Sending email ended! 
